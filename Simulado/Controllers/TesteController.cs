@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Simulado.Dominio;
 using Simulado.Dominio.Filtros;
+using Simulado.Fila.Publicador;
 using Simulado.Service.DTO;
 using Simulado.Service.Service.Contratos;
 using System.Security.Claims;
@@ -13,9 +14,11 @@ namespace Simulado.Controllers
     public class TesteController : ControllerBase
     {
         private readonly IServiceTeste _serviceTeste;
-        public TesteController(IServiceTeste serviceTeste)
+        private readonly IPublicadorBase _publicador;
+        public TesteController(IServiceTeste serviceTeste, IPublicadorBase publicador)
         {
             this._serviceTeste = serviceTeste;
+            this._publicador = publicador;
         }
 
         [Authorize]
@@ -61,8 +64,13 @@ namespace Simulado.Controllers
         [HttpPost("responder")]
         public async Task<IActionResult> Responder([FromBody] RelatorioSimuladoDTO relatorio)
         {
-            string userEmail = this.HttpContext.User.FindFirst(ClaimTypes.Email)!.Value;
-            return Ok(await this._serviceTeste.ResponderSimulador(relatorio, userEmail));
+            EventRelatorioSimuladoDTO evento = new EventRelatorioSimuladoDTO()
+            {
+                relatorio = relatorio,
+                emailUser = this.HttpContext.User.FindFirst(ClaimTypes.Email)!.Value
+            };
+            this._publicador.PublicaMensagem("simulado", "respostaEvento", this._publicador.ConverteMensagem(evento));
+            return Ok(evento);
         }
     }
 }

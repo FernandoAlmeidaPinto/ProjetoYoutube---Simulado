@@ -64,26 +64,25 @@ namespace Simulado.Service.Service
                         RespostaUsuario = r.RespostaUsuario,
                         RespostaCorreta = questoes.Where(q => q._id == r.Questao).First().AltCorreta,
                     });
-            if(await this._serviceQuestao.ResponderQuestoes(resposta))
+
+            await this._serviceQuestao.ResponderQuestoes(resposta);
+
+            Usuario? user = (await this._serviceEstatico.GetManyByFilter(new UsuarioFiltro() { Email = userEmail })).FirstOrDefault();
+            double Aproveitamento = (double)resposta.Select(r => r.RespostaUsuario == r.RespostaCorreta ? 1 : 0).Sum() / teste.QuantTotalQuestoes;
+            RelatorioSimulado relatorio = new RelatorioSimulado()
             {
-                Usuario? user = (await this._serviceEstatico.GetManyByFilter(new UsuarioFiltro() { Email = userEmail })).FirstOrDefault();
-                double Aproveitamento = (double)resposta.Select(r => r.RespostaUsuario == r.RespostaCorreta ? 1 : 0).Sum() / resposta.Count();
-                RelatorioSimulado relatorio = new RelatorioSimulado()
-                {
-                    Simulado = relatorioDTO.Simulado,
-                    UserId = user!._id,
-                    Respostas = resposta,
-                    Aproveitamento = Aproveitamento
-                };
-                await this._repositorioRelatorioSimulado.Add(relatorio);
-                await this.AtualizaDificuldade(teste, Aproveitamento);
-                return new RelatorioSimuladoDTOOutput()
-                {
-                    Simulado = relatorioDTO.Simulado,
-                    Aproveitamento = relatorio.Aproveitamento,
-                };
-            }
-            return new RelatorioSimuladoDTOOutput();
+                Simulado = relatorioDTO.Simulado,
+                UserId = user!._id,
+                Respostas = resposta,
+                Aproveitamento = Aproveitamento
+            };
+            await this._repositorioRelatorioSimulado.Add(relatorio);
+            await this.AtualizaDificuldade(teste, Aproveitamento);
+            return new RelatorioSimuladoDTOOutput()
+            {
+                Simulado = relatorioDTO.Simulado,
+                Aproveitamento = relatorio.Aproveitamento,
+            };
         }
 
         private async Task AtualizaDificuldade(Teste teste, double aproveitamento)
@@ -93,7 +92,6 @@ namespace Simulado.Service.Service
             double dificuldade = 1 - 
                 ((1- teste.Dificuldade) * quantRespostas * vezesRespondido + aproveitamento * teste.QuantTotalQuestoes) 
                 / (quantRespostas * vezesRespondido + teste.QuantTotalQuestoes);
-            teste.Dificuldade = dificuldade;
             await this._repositorio.AtualizaDificuldade(teste._id, dificuldade);
         }
     }

@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Simulado.Dominio\Simulado.Dominio.csproj" />
+    <ProjectReference Include="..\Simulado.Fila\Simulado.Fila.csproj" />
     <ProjectReference Include="..\Simulado.Repositorio\Simulado.Repositorio.csproj" />
   </ItemGroup>
 

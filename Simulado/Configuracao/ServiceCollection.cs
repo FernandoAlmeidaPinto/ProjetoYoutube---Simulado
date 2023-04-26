@@ -12,6 +12,10 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Simulado.Service.DTO;
+using RabbitMQ.Client;
+using Simulado.Fila;
+using Simulado.Fila.Publicador;
+using Simulado.Service.Publicador;
 
 namespace Simulado.Configuracao
 {
@@ -77,6 +81,15 @@ namespace Simulado.Configuracao
                     ValidateAudience = false
                 };
             });
+
+            return services;
+        }
+
+        public static IServiceCollection AddRabbitMQ(this IServiceCollection services)
+        {
+            services.AddSingleton<IConnection>(s => BaseFila.IniciaConexao());
+            services.AddTransient<IModel>(s => s.GetRequiredService<IConnection>().CreateModel());
+            services.AddSingleton<IPublicadorBase, PublicadorAPI>();
 
             return services;
         }

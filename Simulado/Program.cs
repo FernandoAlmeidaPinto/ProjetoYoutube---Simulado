@@ -24,6 +24,8 @@ internal class Program
         builder.Services.AddContexto(configuration);
         builder.Services.AddJwtBearerSimulado();
 
+        builder.Services.AddRabbitMQ();
+
         builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
         var app = builder.Build();
