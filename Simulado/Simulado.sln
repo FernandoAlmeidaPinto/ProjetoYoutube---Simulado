@@ -11,7 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simulado.Dominio", "..\Simu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simulado.Repositorio", "..\Simulado.Repositorio\Simulado.Repositorio.csproj", "{9893692B-9B90-46DB-8BE4-ED16C6E08A4F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simulado.Fila", "..\Simulado.Fila\Simulado.Fila.csproj", "{5218E529-A587-4D20-AB71-A0C7C8DAFFB8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simulado.Fila", "..\Simulado.Fila\Simulado.Fila.csproj", "{5218E529-A587-4D20-AB71-A0C7C8DAFFB8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simulado.RelatorioResposta", "..\Simulado.RelatorioResposta\Simulado.RelatorioResposta.csproj", "{C227584A-39D0-4BC1-A850-F210C1948073}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{56054F07-06A3-4EFD-A13A-4D902FFFFF87}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,9 +43,16 @@ Global
 		{5218E529-A587-4D20-AB71-A0C7C8DAFFB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5218E529-A587-4D20-AB71-A0C7C8DAFFB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5218E529-A587-4D20-AB71-A0C7C8DAFFB8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C227584A-39D0-4BC1-A850-F210C1948073}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C227584A-39D0-4BC1-A850-F210C1948073}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C227584A-39D0-4BC1-A850-F210C1948073}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C227584A-39D0-4BC1-A850-F210C1948073}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C227584A-39D0-4BC1-A850-F210C1948073} = {56054F07-06A3-4EFD-A13A-4D902FFFFF87}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5D22D5A7-73AB-45D1-90F5-83133D32C468}
