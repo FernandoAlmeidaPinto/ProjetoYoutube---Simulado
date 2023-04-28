@@ -27,7 +27,7 @@ internal class Program
         builder.Services.AddRabbitMQ();
 
         builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-        builder.WebHost.UseUrls("https:localhost:5001", "http:localhost:5000");
+        builder.WebHost.UseUrls("https://localhost:5001", "http://localhost:5000");
 
         var app = builder.Build();
 
