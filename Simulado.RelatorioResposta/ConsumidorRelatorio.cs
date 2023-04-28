@@ -6,8 +6,10 @@ namespace Simulado.RelatorioResposta
 {
     public class ConsumidorRelatorio : ConsumidorBase<EventRelatorioSimuladoDTO>
     {
-        private readonly static string queueName = "filaSimulado";
-        public ConsumidorRelatorio(IModel channel) : base(channel, queueName) {}
+        private const string queueName = "filaSimulado";
+
+        private const ushort _prefetchSize = 500;
+        public ConsumidorRelatorio(IModel channel) : base(channel, queueName, _prefetchSize) {}
         protected override void QueueDeclare()
         {
             this._channel.QueueDeclare(queueName, true, false, false);

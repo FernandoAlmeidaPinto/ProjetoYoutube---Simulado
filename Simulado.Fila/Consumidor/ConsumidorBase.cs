@@ -9,26 +9,38 @@ namespace Simulado.Fila.Consumidor
     {
         protected readonly IModel _channel;
         protected readonly string _queue;
-        public ConsumidorBase(IModel channel, string queue)
+        private readonly ushort _prefetchSize;
+        private List<E> _items;
+        public ConsumidorBase(IModel channel, string queue, ushort prefetchSize)
         {
             this._channel = channel;
             this._queue = queue;
-            this._channel.BasicQos(0, 1, false);
+            this._items = new List<E>();
+            this._prefetchSize = prefetchSize;
+            this._channel.BasicQos(0, prefetchSize, false);
             this.QueueDeclare();
         }
-        public async Task IniciaConsumidor(Func<E, Task> processo)
+        public void IniciaConsumidor(Func<IEnumerable<E>, Task> processo)
         {
-            EventingBasicConsumer consumer = new EventingBasicConsumer(this._channel);
+            AsyncEventingBasicConsumer consumer = new AsyncEventingBasicConsumer(this._channel);
 
-            consumer.Received += (model, ea) =>
+            consumer.Received += async (model, ea) =>
             {
                 try
                 {
                     byte[] bytes = ea.Body.ToArray();
                     string mensagem = Encoding.UTF8.GetString(bytes);
                     E? evento = JsonSerializer.Deserialize<E>(mensagem);
-                    if (evento != null) processo(evento);
-                    this._channel.BasicAck(ea.DeliveryTag, false);
+                    if (evento != null)
+                    {
+                        this._items.Add(evento);
+                        if(this._items.Count == this._prefetchSize)
+                        {
+                            await processo(this._items);
+                            this._items.Clear();
+                            this._channel.BasicAck(ea.DeliveryTag, true);
+                        }
+                    }
                 }
                 catch (Exception ex)
                 {

@@ -2,6 +2,6 @@
 {
     public interface IConsumidorBase<E>
     {
-        Task IniciaConsumidor(Func<E, Task> processo);
+        void IniciaConsumidor(Func<IEnumerable<E>, Task> processo);
     }
 }

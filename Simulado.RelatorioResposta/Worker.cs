@@ -20,12 +20,15 @@ namespace Simulado.RelatorioResposta
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             this._logger.LogInformation("Iniciando Consumidor Relatorio");
-            await this._consumidor.IniciaConsumidor(ExecutaRelatorioSimulado);
+            this._consumidor.IniciaConsumidor(ExecutaRelatorioSimulado);
         }
 
-        private async Task ExecutaRelatorioSimulado(EventRelatorioSimuladoDTO evento)
+        private async Task ExecutaRelatorioSimulado(IEnumerable<EventRelatorioSimuladoDTO> eventos)
         {
-            await this._serviceTeste.ResponderSimulador(evento.relatorio, evento.emailUser);
+            foreach (EventRelatorioSimuladoDTO evento in eventos)
+            {
+                await this._serviceTeste.ResponderSimulador(evento.relatorio, evento.emailUser);
+            }
         }
     }
 }
