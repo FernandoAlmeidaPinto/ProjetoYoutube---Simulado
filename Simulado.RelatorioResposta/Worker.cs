@@ -1,3 +1,4 @@
+using Simulado.Dominio;
 using Simulado.Fila.Consumidor;
 using Simulado.Service.DTO;
 using Simulado.Service.Service.Contratos;
@@ -7,10 +8,10 @@ namespace Simulado.RelatorioResposta
     public class Worker : BackgroundService
     {
         private readonly ILogger<Worker> _logger;
-        private readonly IConsumidorBase<EventRelatorioSimuladoDTO> _consumidor;
+        private readonly IConsumidorBase<EventoDTO<RelatorioSimulado>> _consumidor;
         private readonly IServiceTeste _serviceTeste;
 
-        public Worker(ILogger<Worker> logger, IConsumidorBase<EventRelatorioSimuladoDTO> consumidor, IServiceTeste serviceTeste)
+        public Worker(ILogger<Worker> logger, IConsumidorBase<EventoDTO<RelatorioSimulado>> consumidor, IServiceTeste serviceTeste)
         {
             _logger = logger;
             this._consumidor = consumidor;
@@ -23,11 +24,11 @@ namespace Simulado.RelatorioResposta
             this._consumidor.IniciaConsumidor(ExecutaRelatorioSimulado);
         }
 
-        private async Task ExecutaRelatorioSimulado(IEnumerable<EventRelatorioSimuladoDTO> eventos)
+        private async Task ExecutaRelatorioSimulado(IEnumerable<EventoDTO<RelatorioSimulado>> eventos)
         {
-            foreach (EventRelatorioSimuladoDTO evento in eventos)
+            foreach (EventoDTO<RelatorioSimulado> evento in eventos)
             {
-                await this._serviceTeste.ResponderSimulador(evento.relatorio, evento.emailUser);
+                await this._serviceTeste.RelatorioSimulado(evento);
             }
         }
     }

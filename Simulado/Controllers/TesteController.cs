@@ -64,12 +64,12 @@ namespace Simulado.Controllers
         [HttpPost("responder")]
         public async Task<IActionResult> Responder([FromBody] RelatorioSimuladoDTO relatorio)
         {
-            EventRelatorioSimuladoDTO evento = new EventRelatorioSimuladoDTO()
+            EventoDTO<RelatorioSimuladoDTO> evento = new EventoDTO<RelatorioSimuladoDTO>()
             {
-                relatorio = relatorio,
-                emailUser = this.HttpContext.User.FindFirst(ClaimTypes.Email)!.Value
+                Relatorio = relatorio,
+                EmailUser = this.HttpContext.User.FindFirst(ClaimTypes.Email)!.Value
             };
-            this._publicador.PublicaMensagem("simulado", "respostaEvento", this._publicador.ConverteMensagem(evento));
+            this._publicador.PublicaMensagem("simulado", "responderQuestao", this._publicador.ConverteMensagem(evento));
             return Ok(evento);
         }
     }

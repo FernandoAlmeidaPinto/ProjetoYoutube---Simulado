@@ -1,15 +1,14 @@
-using AutoMapper;
-using Microsoft.Extensions.Configuration;
 using RabbitMQ.Client;
 using Simulado.Dominio;
 using Simulado.Fila;
 using Simulado.Fila.Consumidor;
-using Simulado.RelatorioResposta;
+using Simulado.Fila.Publicador;
 using Simulado.Repositorio;
 using Simulado.Repositorio.Config;
 using Simulado.Repositorio.Contexto;
 using Simulado.Repositorio.Repositorios;
 using Simulado.Repositorio.Repositorios.Contratos;
+using Simulado.ResponderQuestao;
 using Simulado.Service.ConfigMapper;
 using Simulado.Service.DTO;
 using Simulado.Service.Service;
@@ -30,9 +29,9 @@ IHost host = Host.CreateDefaultBuilder(args)
         services.AddSingleton<IConfigConexao, ConfigConexao>();
         services.AddSingleton<IMongoContexto, MongoContexto>();
 
-        services.AddSingleton<IConsumidorBase<EventoDTO<RelatorioSimulado>>, ConsumidorRelatorio>();
+        services.AddSingleton<IConsumidorBase<EventoDTO<RelatorioSimuladoDTO>>, ConsumidorQuestao>();
+        services.AddSingleton<IPublicadorBase, PublicadorQuestao>();
 
-        services.AddTransient<IServiceTeste, ServiceTeste>();
         services.AddTransient<IServiceQuestao, ServiceQuestao>();
         services.AddTransient<IServiceEstatico<Usuario>, ServiceEstatico<Usuario>>();
         services.AddTransient<IRepositorioEstatico<Usuario>, RepositorioEstatico<Usuario>>();
@@ -40,7 +39,6 @@ IHost host = Host.CreateDefaultBuilder(args)
         services.AddTransient<IRepositorioQuestao, RepositorioQuestao>();
         services.AddTransient<IRepositorioBase<RelatorioSimulado>, RepositorioBase<RelatorioSimulado>>();
         services.AddTransient(s => new ConfigMapper().AutoMapper);
-
     })
     .Build();
 

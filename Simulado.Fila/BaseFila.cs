@@ -14,12 +14,12 @@ namespace Simulado.Fila
                 UserName = "guest",
                 Password = "guest",
                 VirtualHost = "/",
-                DispatchConsumersAsync = true,
-                Ssl =
-                {
-                    ServerName = "localhost",
-                    Enabled = false
-                }
+                // DispatchConsumersAsync = true,
+                //Ssl =
+                //{
+                //    ServerName = "localhost",
+                //    Enabled = false
+                //}
             };
 
             IConnection conn = null;

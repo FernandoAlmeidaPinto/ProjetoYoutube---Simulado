@@ -8,6 +8,6 @@ namespace Simulado.Service.Service.Contratos
     {
         Task<bool> Add(QuestaoDTO questao, string userEmail);
         Task<IEnumerable<Questao>> GetManyQuestoes(int quantidade, IFiltro<Questao>? filtro);
-        Task<bool> ResponderQuestoes(IEnumerable<Resposta> respostas);
+        Task ResponderQuestoes(EventoDTO<RelatorioSimuladoDTO> evento);
     }
 }

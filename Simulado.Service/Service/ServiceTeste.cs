@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
 using Simulado.Dominio;
 using Simulado.Dominio.Filtros;
+using Simulado.Fila;
+using Simulado.Fila.Publicador;
 using Simulado.Repositorio.Repositorios.Contratos;
 using Simulado.Service.DTO;
 using Simulado.Service.Service.Contratos;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Simulado.Service.Service
 {
@@ -48,41 +51,58 @@ namespace Simulado.Service.Service
             return await this._repositorio.Add(teste);
         }
 
-        public async Task<RelatorioSimuladoDTOOutput> ResponderSimulador(RelatorioSimuladoDTO relatorioDTO, string userEmail)
+        //public async Task<RelatorioSimuladoDTOOutput> ResponderSimulador(RelatorioSimuladoDTO relatorioDTO, string userEmail)
+        //{
+        //    Teste? teste = await this._repositorio.GetByIDAsync(relatorioDTO.Simulado);
+        //    if(teste == null) return new RelatorioSimuladoDTOOutput();
+        //    List<Questao> questoes =
+        //        (await this._serviceQuestao.GetManyByFilter(
+        //            new QuestaoFiltro() { Ids = relatorioDTO.Respostas.Select(r => r.Questao) })).ToList();
+
+        //    IEnumerable<Resposta> resposta =
+        //        relatorioDTO.Respostas.Select(
+        //            r => new Resposta()
+        //            {
+        //                Questao = r.Questao,
+        //                RespostaUsuario = r.RespostaUsuario,
+        //                RespostaCorreta = questoes.Where(q => q._id == r.Questao).First().AltCorreta,
+        //            });
+
+        //    await this._serviceQuestao.ResponderQuestoes(resposta);
+
+        //    Usuario? user = (await this._serviceEstatico.GetManyByFilter(new UsuarioFiltro() { Email = userEmail })).FirstOrDefault();
+        //    double Aproveitamento = (double)resposta.Select(r => r.RespostaUsuario == r.RespostaCorreta ? 1 : 0).Sum() / teste.QuantTotalQuestoes;
+        //    RelatorioSimulado relatorio = new RelatorioSimulado()
+        //    {
+        //        Simulado = relatorioDTO.Simulado,
+        //        UserId = user!._id,
+        //        Respostas = resposta,
+        //        Aproveitamento = Aproveitamento
+        //    };
+        //    await this._repositorioRelatorioSimulado.Add(relatorio);
+        //    await this.AtualizaDificuldade(teste, Aproveitamento);
+        //    return new RelatorioSimuladoDTOOutput()
+        //    {
+        //        Simulado = relatorioDTO.Simulado,
+        //        Aproveitamento = relatorio.Aproveitamento,
+        //    };
+        //}
+
+        public async Task RelatorioSimulado(EventoDTO<RelatorioSimulado> evento)
         {
-            Teste? teste = await this._repositorio.GetByIDAsync(relatorioDTO.Simulado);
-            if(teste == null) return new RelatorioSimuladoDTOOutput();
-            List<Questao> questoes =
-                (await this._serviceQuestao.GetManyByFilter(
-                    new QuestaoFiltro() { Ids = relatorioDTO.Respostas.Select(r => r.Questao) })).ToList();
-
-            IEnumerable<Resposta> resposta =
-                relatorioDTO.Respostas.Select(
-                    r => new Resposta()
-                    {
-                        Questao = r.Questao,
-                        RespostaUsuario = r.RespostaUsuario,
-                        RespostaCorreta = questoes.Where(q => q._id == r.Questao).First().AltCorreta,
-                    });
-
-            await this._serviceQuestao.ResponderQuestoes(resposta);
-
-            Usuario? user = (await this._serviceEstatico.GetManyByFilter(new UsuarioFiltro() { Email = userEmail })).FirstOrDefault();
-            double Aproveitamento = (double)resposta.Select(r => r.RespostaUsuario == r.RespostaCorreta ? 1 : 0).Sum() / teste.QuantTotalQuestoes;
+            Teste? teste = await this._repositorio.GetByIDAsync(evento.Relatorio.Simulado);
+            Usuario? user = (await this._serviceEstatico.GetManyByFilter(new UsuarioFiltro() { Email = evento.EmailUser })).FirstOrDefault();
+            double Aproveitamento = 
+                (double)evento.Relatorio.Respostas.Select(r => r.RespostaUsuario == r.RespostaCorreta ? 1 : 0).Sum() / teste!.QuantTotalQuestoes;
             RelatorioSimulado relatorio = new RelatorioSimulado()
             {
-                Simulado = relatorioDTO.Simulado,
+                Simulado = evento.Relatorio.Simulado,
                 UserId = user!._id,
-                Respostas = resposta,
+                Respostas = evento.Relatorio.Respostas,
                 Aproveitamento = Aproveitamento
             };
             await this._repositorioRelatorioSimulado.Add(relatorio);
             await this.AtualizaDificuldade(teste, Aproveitamento);
-            return new RelatorioSimuladoDTOOutput()
-            {
-                Simulado = relatorioDTO.Simulado,
-                Aproveitamento = relatorio.Aproveitamento,
-            };
         }
 
         private async Task AtualizaDificuldade(Teste teste, double aproveitamento)

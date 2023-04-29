@@ -1,10 +1,11 @@
 ﻿using RabbitMQ.Client;
+using Simulado.Dominio;
 using Simulado.Fila.Consumidor;
 using Simulado.Service.DTO;
 
 namespace Simulado.RelatorioResposta
 {
-    public class ConsumidorRelatorio : ConsumidorBase<EventRelatorioSimuladoDTO>
+    public class ConsumidorRelatorio : ConsumidorBase<EventoDTO<RelatorioSimulado>>
     {
         private const string queueName = "filaSimulado";
 
