@@ -9,7 +9,7 @@ namespace Simulado.RelatorioResposta
     {
         private const string queueName = "filaSimulado";
 
-        private const ushort _prefetchSize = 500;
+        private const ushort _prefetchSize = 1;
         public ConsumidorRelatorio(IModel channel) : base(channel, queueName, _prefetchSize) {}
         protected override void QueueDeclare()
         {

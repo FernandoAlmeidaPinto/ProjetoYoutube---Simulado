@@ -22,9 +22,9 @@ namespace Simulado.Fila.Consumidor
         }
         public void IniciaConsumidor(Func<IEnumerable<E>, Task> processo)
         {
-            EventingBasicConsumer consumer = new EventingBasicConsumer(this._channel);
+            AsyncEventingBasicConsumer consumer = new AsyncEventingBasicConsumer(this._channel);
 
-            consumer.Received += (model, ea) =>
+            consumer.Received += async (model, ea) =>
             {
                 try
                 {
@@ -36,7 +36,7 @@ namespace Simulado.Fila.Consumidor
                         this._items.Add(evento);
                         if(this._items.Count == this._prefetchSize)
                         {
-                            processo(this._items);
+                            await processo.Invoke(this._items);
                             this._items.Clear();
                             this._channel.BasicAck(ea.DeliveryTag, false);
                         }

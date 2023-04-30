@@ -8,7 +8,7 @@ namespace Simulado.ResponderQuestao
     {
         private const string queueName = "filaQuestao";
 
-        private const ushort _prefetchSize = 500;
+        private const ushort _prefetchSize = 1;
         public ConsumidorQuestao(IModel channel) : base(channel, queueName, _prefetchSize) { }
         protected override void QueueDeclare()
         {
