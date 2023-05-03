@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿using Microsoft.Extensions.Logging;
+using MongoDB.Driver;
 using Simulado.Dominio;
 using Simulado.Dominio.Const;
 using Simulado.Repositorio.Contexto;
@@ -9,9 +10,11 @@ namespace Simulado.Repositorio.Repositorios
     public class RepositorioTeste : RepositorioBase<Teste>, IRepositorioTeste
     {
         private readonly IMongoCollection<Teste> _collection;
-        public RepositorioTeste(IMongoContexto contexto) : base(contexto)
+        private readonly ILogger<Teste> _logger;
+        public RepositorioTeste(IMongoContexto contexto, ILogger<Teste> logger) : base(contexto, logger)
         {
             this._collection = contexto.GetCollection<Teste>();
+            this._logger = logger;
         }
         public async Task<bool> AtualizaDificuldade(string testeId, double dificuldade)
         {

@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿using Microsoft.Extensions.Logging;
+using MongoDB.Driver;
 using SharpCompress.Common;
 using Simulado.Dominio;
 using Simulado.Dominio.Filtros;
@@ -10,9 +11,11 @@ namespace Simulado.Repositorio.Repositorios
     public class RepositorioQuestao : RepositorioBase<Questao>, IRepositorioQuestao
     {
         private readonly IMongoCollection<Questao> _collection;
-        public RepositorioQuestao(IMongoContexto contexto) : base(contexto)
+        private readonly ILogger<Questao> _logger;
+        public RepositorioQuestao(IMongoContexto contexto, ILogger<Questao> logger) : base(contexto, logger)
         {
             this._collection = contexto.GetCollection<Questao>();
+            this._logger = logger;
         }
         public async Task<IEnumerable<Questao>> GetQuestaoByQuant(int quantidade, IFiltro<Questao>? filtro = null)
         {

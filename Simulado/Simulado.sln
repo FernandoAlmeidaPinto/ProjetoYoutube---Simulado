@@ -17,7 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simulado.RelatorioResposta"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{56054F07-06A3-4EFD-A13A-4D902FFFFF87}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simulado.ResponderQuestao", "..\Simulado.ResponderQuestao\Simulado.ResponderQuestao.csproj", "{B217880B-36BD-4451-AC62-BEFD5A544E03}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simulado.ResponderQuestao", "..\Simulado.ResponderQuestao\Simulado.ResponderQuestao.csproj", "{B217880B-36BD-4451-AC62-BEFD5A544E03}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simulado.Test", "..\Simulado.Test\Simulado.Test.csproj", "{EE62CF39-088E-40B6-83DC-95BBCB6A5EFF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,6 +55,10 @@ Global
 		{B217880B-36BD-4451-AC62-BEFD5A544E03}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B217880B-36BD-4451-AC62-BEFD5A544E03}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B217880B-36BD-4451-AC62-BEFD5A544E03}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE62CF39-088E-40B6-83DC-95BBCB6A5EFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE62CF39-088E-40B6-83DC-95BBCB6A5EFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE62CF39-088E-40B6-83DC-95BBCB6A5EFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE62CF39-088E-40B6-83DC-95BBCB6A5EFF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
